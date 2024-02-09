@@ -2,13 +2,13 @@
 
 namespace BulkyWeb.Models
 {
-    public class Category
+    public class CategoryModel
     {
         [Key]
-        public int Id { get; set; }
+        public int CategoryID { get; set; }
 
         [Required]
-        public string Name { get; set; }
+        public string CategoryName { get; set; }
         public int CategoryOrder { get; set; }
     }
 }
