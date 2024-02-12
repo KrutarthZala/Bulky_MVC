@@ -11,12 +11,16 @@ namespace BulkyWeb.Controllers
         {
             _dbCategory = dbCategory;
         }
+
+        #region Display Category
         public IActionResult Index()
         {
             List<CategoryModel> objCategoryList = _dbCategory.Categories.ToList();
             return View(objCategoryList);
         }
+        #endregion
 
+        #region Create Category
         public IActionResult CreateProduct()
         {
             return View();
@@ -25,9 +29,85 @@ namespace BulkyWeb.Controllers
         [HttpPost]
         public IActionResult CreateProduct(CategoryModel categoryObj)
         {
-            _dbCategory.Categories.Add(categoryObj);
+            if (categoryObj.CategoryName == categoryObj.CategoryOrder.ToString())
+            {
+                ModelState.AddModelError("CategoryName", "The Category Display Order cannot exactly match the Category Name");
+            }
+
+            if (ModelState.IsValid)
+            {
+                _dbCategory.Categories.Add(categoryObj);
+                _dbCategory.SaveChanges();
+                TempData["success"] = "Category Created Successfully";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+        #endregion
+
+        #region Edit Category
+        public IActionResult EditProduct(int? categoryID)
+        {
+            if(categoryID == null || categoryID == 0)
+            {
+                return NotFound();
+            }
+
+            CategoryModel? categoryFromDb = _dbCategory.Categories.Find(categoryID);
+            //CategoryModel? categoryFromDb1 = _dbCategory.Categories.FirstOrDefault(u=>u.CategoryID == categoryID);
+            //CategoryModel? categoryFromDb2 = _dbCategory.Categories.Where(u => u.CategoryID == categoryID).FirstOrDefault();
+
+            if (categoryFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDb);
+        }
+
+        [HttpPost]
+        public IActionResult EditProduct(CategoryModel categoryObj)
+        {
+            if (ModelState.IsValid)
+            {
+                _dbCategory.Categories.Update(categoryObj);
+                _dbCategory.SaveChanges();
+                TempData["success"] = "Category Updated Successfully";
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
+        #endregion
+
+        #region Delete Category
+        public IActionResult DeleteProduct(int? categoryID)
+        {
+            if (categoryID == null || categoryID == 0)
+            {
+                return NotFound();
+            }
+
+            CategoryModel? categoryFromDb = _dbCategory.Categories.Find(categoryID);
+
+            if (categoryFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDb);
+        }
+
+        [HttpPost, ActionName("DeleteProduct")]
+        public IActionResult DeleteProductPOST(int? categoryID)
+        {
+            CategoryModel? categoryObj = _dbCategory.Categories.Find(categoryID);
+            if (categoryObj == null)
+            {
+                return NotFound();
+            }
+            _dbCategory.Categories.Remove(categoryObj);
             _dbCategory.SaveChanges();
+            TempData["success"] = "Category Deleted Successfully";
             return RedirectToAction("Index");
         }
+        #endregion
     }
 }
