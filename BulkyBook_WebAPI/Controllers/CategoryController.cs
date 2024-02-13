@@ -52,7 +52,7 @@ namespace BulkyBook_WebAPI.Controllers
         [HttpGet("{CategoryID}")]
         public async Task<IActionResult> GetSpecificCategory(int CategoryID)
         {
-            // Validate ProductId
+            // Validate CategoryID
             if (CategoryID < 1)
             {
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
@@ -60,7 +60,7 @@ namespace BulkyBook_WebAPI.Controllers
 
             var category = await _context.Category.FirstOrDefaultAsync(p => p.CategoryID == CategoryID);
 
-            // Validate product
+            // Validate category
             if (category == null)
             {
                 return NotFound(new { StatusCode = 404, Message = "Not Found" });
@@ -75,7 +75,7 @@ namespace BulkyBook_WebAPI.Controllers
         {
             try
             {
-                // Validate product
+                // Validate category
                 if (category == null)
                 {
                     return BadRequest(new
@@ -104,7 +104,7 @@ namespace BulkyBook_WebAPI.Controllers
         [HttpPut]
         public async Task<IActionResult> PutProduct(CategoryModel category)
         {
-            // Validate ProductId and productData
+            // Validate CategoryID and category
             if (category == null || category.CategoryID == 0)
             {
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
@@ -112,7 +112,7 @@ namespace BulkyBook_WebAPI.Controllers
 
             var newCategory = await _context.Category.FindAsync(category.CategoryID);
 
-            // Validate product
+            // Validate newCategory
             if (newCategory == null)
             {
                 return NotFound(new { StatusCode = 404, Message = "Not Found" });
@@ -138,7 +138,7 @@ namespace BulkyBook_WebAPI.Controllers
 
             var category = await _context.Category.FindAsync(CategoryID);
 
-            // Validate product
+            // Validate category
             if (category == null)
             {
                 return NotFound(new { StatusCode = 404, Message = "Not Found" });
