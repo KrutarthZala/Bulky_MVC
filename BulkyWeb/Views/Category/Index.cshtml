@@ -1,51 +1,59 @@
 ﻿@model List<CategoryModel>
 
-<div class="container">
-    <div class="row">
-        <div class="col-6 pt-2 pb-2">
-            <h3 class="text-primary"> Category List</h3>
+<div class="card shadow border-0 mt-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Category List</h2>
+            </div>
         </div>
-        <div class="col-6 text-end">
-            <a asp-controller="Category" asp-action="CreateProduct" class="btn btn-primary btn-sm">
-                <i class="bi bi-plus-circle"></i> Create New Category
-            </a>
-        </div>
-
     </div>
+    <div class="card-body p-3">
+        <div class="row pb-3">
+            <div class="col-6">
+            </div>
+            <div class="col-6 text-end">
+                <a asp-controller="Category" asp-action="CreateCategory" class="btn btn-primary btn-sm">
+                    <i class="bi bi-plus-circle"></i> Create New Category
+                </a>
+            </div>
+
+        </div>
 
 
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>
-                    Category Name
-                </th>
-                <th>
-                    Category Display Order
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var obj in Model.OrderBy(u => u.CategoryOrder))
-            {            
+        <table class="table table-bordered table-striped">
+            <thead>
                 <tr>
-                    <td>@obj.CategoryName</td>
-                    <td>@obj.CategoryOrder</td>
-                    <td>
-                        <div class="w-75 btn-group" role="group">
-                            <a asp-controller="Category" asp-action="EditProduct" asp-route-categoryID="@obj.CategoryID" class="btn btn-primary mx-2">
-                                <i class="bi bi-pencil-square"></i> Edit
-                            </a>
-                            <a asp-controller="Category" asp-action="DeleteProduct" asp-route-categoryID="@obj.CategoryID" class="btn btn-danger mx-2">
-                                <i class="bi bi-trash3"></i> Delete
-                            </a>
-                        </div> 
-                    </td>
+                    <th>
+                        Category Name
+                    </th>
+                    <th>
+                        Category Display Order
+                    </th>
+                    <th></th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-
+            </thead>
+            <tbody>
+                @foreach (var obj in Model.OrderBy(u => u.CategoryOrder))
+                {
+                    <tr>
+                        <td>@obj.CategoryName</td>
+                        <td>@obj.CategoryOrder</td>
+                        <td>
+                            <div class="w-75 btn-group" role="group">
+                                <a asp-controller="Category" asp-action="EditCategory" asp-route-categoryID="@obj.CategoryID" class="btn btn-primary mx-2">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+                                <a asp-controller="Category" asp-action="DeleteCategory" asp-route-categoryID="@obj.CategoryID" class="btn btn-danger mx-2">
+                                    <i class="bi bi-trash3"></i> Delete
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 </div>
+
+

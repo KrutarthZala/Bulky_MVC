@@ -21,13 +21,13 @@ namespace BulkyWeb.Controllers
         #endregion
 
         #region Create Category
-        public IActionResult CreateProduct()
+        public IActionResult CreateCategory()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult CreateProduct(CategoryModel categoryObj)
+        public IActionResult CreateCategory(CategoryModel categoryObj)
         {
             if (categoryObj.CategoryName == categoryObj.CategoryOrder.ToString())
             {
@@ -46,7 +46,7 @@ namespace BulkyWeb.Controllers
         #endregion
 
         #region Edit Category
-        public IActionResult EditProduct(int? categoryID)
+        public IActionResult EditCategory(int? categoryID)
         {
             if(categoryID == null || categoryID == 0)
             {
@@ -65,7 +65,7 @@ namespace BulkyWeb.Controllers
         }
 
         [HttpPost]
-        public IActionResult EditProduct(CategoryModel categoryObj)
+        public IActionResult EditCategory(CategoryModel categoryObj)
         {
             if (ModelState.IsValid)
             {
@@ -79,7 +79,7 @@ namespace BulkyWeb.Controllers
         #endregion
 
         #region Delete Category
-        public IActionResult DeleteProduct(int? categoryID)
+        public IActionResult DeleteCategory(int? categoryID)
         {
             if (categoryID == null || categoryID == 0)
             {
@@ -95,8 +95,8 @@ namespace BulkyWeb.Controllers
             return View(categoryFromDb);
         }
 
-        [HttpPost, ActionName("DeleteProduct")]
-        public IActionResult DeleteProductPOST(int? categoryID)
+        [HttpPost, ActionName("DeleteCategory")]
+        public IActionResult DeleteCategoryPOST(int? categoryID)
         {
             CategoryModel? categoryObj = _dbCategory.Categories.Find(categoryID);
             if (categoryObj == null)
