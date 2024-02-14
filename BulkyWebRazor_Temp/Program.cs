@@ -1,7 +1,7 @@
-using BulkyWebRazor_Temp.Data;
+using BulkyBookWebRazor_Temp.Data;
 using Microsoft.EntityFrameworkCore;
 
-namespace BulkyWebRazor_Temp
+namespace BulkyBookWebRazor_Temp
 {
     public class Program
     {
