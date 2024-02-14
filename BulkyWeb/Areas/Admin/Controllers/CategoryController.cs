@@ -3,14 +3,14 @@ using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BulkyBookWeb.Controllers
+namespace BulkyBookWeb.Areas.Admin.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IUnitOfWork unitOfWork) 
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-           _unitOfWork = unitOfWork;
+            _unitOfWork = unitOfWork;
         }
 
         #region Display Category
@@ -37,7 +37,7 @@ namespace BulkyBookWeb.Controllers
 
             if (ModelState.IsValid)
             {
-               _unitOfWork.Category.Add(categoryObj);
+                _unitOfWork.Category.Add(categoryObj);
                 _unitOfWork.Save();
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
@@ -49,7 +49,7 @@ namespace BulkyBookWeb.Controllers
         #region Edit Category
         public IActionResult EditCategory(int? categoryID)
         {
-            if(categoryID == null || categoryID == 0)
+            if (categoryID == null || categoryID == 0)
             {
                 return NotFound();
             }

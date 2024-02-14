@@ -4,7 +4,7 @@
     <div class="card-header bg-secondary bg-gradient ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="text-white py-2">Edit Category</h2>
+                <h2 class="text-white py-2">Delete Category</h2>
             </div>
         </div>
     </div>
@@ -14,21 +14,19 @@
             <div class="border p-3 mt-4">
                 @* <div asp-validation-summary="ModelOnly"></div> *@
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="CategoryName" class="form-control border-0 shadow" />
+                    <input asp-for="CategoryName" disabled class="form-control border-0 shadow" />
                     <label asp-for="CategoryName"></label>
-                    <span asp-validation-for="CategoryName" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input asp-for="CategoryOrder" class="form-control border-0 shadow" />
+                    <input asp-for="CategoryOrder" disabled class="form-control border-0 shadow" />
                     <label asp-for="CategoryOrder"></label>
-                    <span asp-validation-for="CategoryOrder" class="text-danger"></span>
                 </div>
                 <div class="row pt-2">
                     <div class="col-6 col-md-3">
-                        <button type="submit" class="btn btn-primary form-control">Edit Category</button>
+                        <button type="submit" class="btn btn-danger form-control">Delete Category</button>
                     </div>
                     <div class="col-6 col-md-3">
-                        <a asp-controller="Category" asp-action="Index" class="btn btn-secondary border form-control">
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="btn btn-secondary border form-control">
                             Back to List
                         </a>
                     </div>
@@ -39,9 +37,3 @@
 </div>
 
 
-
-@section Scripts {
-    @{
-        <partial name="_ValidationScriptsPartial" />
-    }
-}
