@@ -3,6 +3,7 @@ using BulkyBook.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBook.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240215084340_AddForeignKeyToProductCategoryRelation")]
+    partial class AddForeignKeyToProductCategoryRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -85,9 +88,6 @@ namespace BulkyBook.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProductImageURL")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double>("ProductListPrice")
                         .HasColumnType("float");
 
@@ -118,7 +118,6 @@ namespace BulkyBook.DataAccess.Migrations
                             ProductAuthor = "Billy Spark",
                             ProductDescription = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincProductIDunt. ",
                             ProductISBN = "SWD9999001",
-                            ProductImageURL = "",
                             ProductListPrice = 99.0,
                             ProductPrice = 90.0,
                             ProductPrice100 = 80.0,
@@ -132,7 +131,6 @@ namespace BulkyBook.DataAccess.Migrations
                             ProductAuthor = "Nancy Hoover",
                             ProductDescription = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincProductIDunt. ",
                             ProductISBN = "CAW777777701",
-                            ProductImageURL = "",
                             ProductListPrice = 40.0,
                             ProductPrice = 30.0,
                             ProductPrice100 = 20.0,
@@ -146,7 +144,6 @@ namespace BulkyBook.DataAccess.Migrations
                             ProductAuthor = "Julian Button",
                             ProductDescription = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincProductIDunt. ",
                             ProductISBN = "RITO5555501",
-                            ProductImageURL = "",
                             ProductListPrice = 55.0,
                             ProductPrice = 50.0,
                             ProductPrice100 = 35.0,
@@ -160,7 +157,6 @@ namespace BulkyBook.DataAccess.Migrations
                             ProductAuthor = "Abby Muscles",
                             ProductDescription = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincProductIDunt. ",
                             ProductISBN = "WS3333333301",
-                            ProductImageURL = "",
                             ProductListPrice = 70.0,
                             ProductPrice = 65.0,
                             ProductPrice100 = 55.0,
@@ -174,7 +170,6 @@ namespace BulkyBook.DataAccess.Migrations
                             ProductAuthor = "Ron Parker",
                             ProductDescription = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincProductIDunt. ",
                             ProductISBN = "SOTJ1111111101",
-                            ProductImageURL = "",
                             ProductListPrice = 30.0,
                             ProductPrice = 27.0,
                             ProductPrice100 = 20.0,
@@ -188,7 +183,6 @@ namespace BulkyBook.DataAccess.Migrations
                             ProductAuthor = "Laura Phantom",
                             ProductDescription = "Praesent vitae sodales libero. Praesent molestie orci augue, vitae euismod velit sollicitudin ac. Praesent vestibulum facilisis nibh ut ultricies.\r\n\r\nNunc malesuada viverra ipsum sit amet tincProductIDunt. ",
                             ProductISBN = "FOT000000001",
-                            ProductImageURL = "",
                             ProductListPrice = 25.0,
                             ProductPrice = 23.0,
                             ProductPrice100 = 20.0,

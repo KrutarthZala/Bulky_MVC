@@ -32,7 +32,9 @@ namespace BulkyBook.DataAccess.Data
                     ProductListPrice=99,
                     ProductPrice=90,
                     ProductPrice50=85,
-                    ProductPrice100=80
+                    ProductPrice100=80,
+                    CategoryID =1,
+                    ProductImageURL=""
                 },
                 new ProductModel
                 {
@@ -44,7 +46,9 @@ namespace BulkyBook.DataAccess.Data
                     ProductListPrice = 40,
                     ProductPrice = 30,
                     ProductPrice50 = 25,
-                    ProductPrice100 = 20
+                    ProductPrice100 = 20,
+                    CategoryID = 1,
+                    ProductImageURL = ""
                 },
                 new ProductModel
                 {
@@ -56,7 +60,9 @@ namespace BulkyBook.DataAccess.Data
                     ProductListPrice = 55,
                     ProductPrice = 50,
                     ProductPrice50 = 40,
-                    ProductPrice100 = 35
+                    ProductPrice100 = 35,
+                    CategoryID = 1,
+                    ProductImageURL = ""
                 },
                 new ProductModel
                 {
@@ -68,7 +74,9 @@ namespace BulkyBook.DataAccess.Data
                     ProductListPrice = 70,
                     ProductPrice = 65,
                     ProductPrice50 = 60,
-                    ProductPrice100 = 55
+                    ProductPrice100 = 55,
+                    CategoryID = 2,
+                    ProductImageURL = ""
                 },
                 new ProductModel
                 {
@@ -80,7 +88,9 @@ namespace BulkyBook.DataAccess.Data
                     ProductListPrice = 30,
                     ProductPrice = 27,
                     ProductPrice50 = 25,
-                    ProductPrice100 = 20
+                    ProductPrice100 = 20,
+                    CategoryID = 2,
+                    ProductImageURL = ""
                 },
                 new ProductModel
                 {
@@ -92,7 +102,9 @@ namespace BulkyBook.DataAccess.Data
                     ProductListPrice = 25,
                     ProductPrice = 23,
                     ProductPrice50 = 22,
-                    ProductPrice100 = 20
+                    ProductPrice100 = 20,
+                    CategoryID = 3,
+                    ProductImageURL = ""
                 }
                 );
         }

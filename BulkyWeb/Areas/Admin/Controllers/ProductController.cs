@@ -1,6 +1,8 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
+using BulkyBook.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
@@ -17,6 +19,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<ProductModel> objProductList = _unitOfWork.Product.GetAll().ToList();
+            
             return View(objProductList);
         }
         #endregion
@@ -24,20 +27,31 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         #region Create Product
         public IActionResult CreateProduct()
         {
-            return View();
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll()
+                .Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.CategoryID.ToString()
+                });
+
+            // ViewBag.CategoryList = CategoryList;   
+            // ViewData["CategoryList"] = CategoryList;
+
+            ProductVM productVM = new()
+            {
+                CategoryList = CategoryList,
+                Product = new ProductModel()
+            };
+            
+            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult CreateProduct(ProductModel ProductObj)
+        public IActionResult CreateProduct(ProductVM ProductObj)
         {
-            //if (ProductObj.ProductName == ProductObj.ProductOrder.ToString())
-            //{
-            //    ModelState.AddModelError("ProductName", "The Product Display Order cannot exactly match the Product Name");
-            //}
-
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(ProductObj);
+                _unitOfWork.Product.Add(ProductObj.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
