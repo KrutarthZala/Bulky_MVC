@@ -10,9 +10,11 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         #region Display Product
@@ -25,7 +27,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         #endregion
 
         #region Create Product
-        public IActionResult CreateProduct()
+        public IActionResult UpsertProduct(int? productID)
         {
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll()
                 .Select(u => new SelectListItem
@@ -42,51 +44,41 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 CategoryList = CategoryList,
                 Product = new ProductModel()
             };
+
+            if( productID == null || productID == 0)
+            {
+                // Create 
+                return View(productVM);
+            }
+            else
+            {
+                // Update
+                productVM.Product = _unitOfWork.Product.Get(u=>u.ProductID ==  productID);
+                return View(productVM);
+            }
             
-            return View(productVM);
         }
 
         [HttpPost]
-        public IActionResult CreateProduct(ProductVM ProductObj)
+        public IActionResult UpsertProduct(ProductVM ProductObj, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if(file != null)
+                {
+                    string productFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string productPath = Path.Combine(wwwRootPath, @"images\product");
+
+                    using(var fileStream = new FileStream(Path.Combine(productPath, productFileName), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    ProductObj.Product.ProductImageURL = @"\images\product\" + productFileName;
+                }
                 _unitOfWork.Product.Add(ProductObj.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
-        }
-        #endregion
-
-        #region Edit Product
-        public IActionResult EditProduct(int? ProductID)
-        {
-            if (ProductID == null || ProductID == 0)
-            {
-                return NotFound();
-            }
-
-            ProductModel? ProductFromDb = _unitOfWork.Product.Get(u => u.ProductID == ProductID);
-            //ProductModel? ProductFromDb1 = _dbProduct.Product.FirstOrDefault(u=>u.ProductID == ProductID);
-            //ProductModel? ProductFromDb2 = _dbProduct.Product.Where(u => u.ProductID == ProductID).FirstOrDefault();
-
-            if (ProductFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(ProductFromDb);
-        }
-
-        [HttpPost]
-        public IActionResult EditProduct(ProductModel ProductObj)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(ProductObj);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Updated Successfully";
                 return RedirectToAction("Index");
             }
             return View();
