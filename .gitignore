@@ -362,5 +362,8 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
-# Folder of Images
-BulkyWeb/wwwroot/images/
+# Images
+# BulkyWeb/wwwroot/images/
+*.jpg
+*.jpeg
+*.png
