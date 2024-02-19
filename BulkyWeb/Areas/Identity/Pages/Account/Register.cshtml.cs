@@ -109,6 +109,14 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
 
+            [Required]
+            public string? BulkyBookUserName {  get; set; }
+            public string? UserStreetAddress {  get; set; }
+            public string? UserCity { get; set; }
+            public string? UserState {  get; set; }
+            public string? UserPostalCode { get; set; }
+            public string? PhoneNumber {  get; set; }
+
         }
 
 
@@ -145,6 +153,12 @@ namespace BulkyBookWeb.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.BulkyBookUserName = Input.BulkyBookUserName;
+                user.UserStreetAddress = Input.UserStreetAddress;
+                user.UserCity = Input.UserCity;
+                user.UserState = Input.UserState;
+                user.UserPostalCode = Input.UserPostalCode;
+                user.PhoneNumber = Input.PhoneNumber;   
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
