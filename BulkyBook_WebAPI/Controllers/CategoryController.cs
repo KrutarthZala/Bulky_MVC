@@ -1,5 +1,6 @@
 ﻿using BulkyBook_WebAPI.Data;
 using BulkyBook_WebAPI.Models;
+using BulkyBook_WebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,11 +10,11 @@ namespace BulkyBook_WebAPI.Controllers
     [ApiController]
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(ApplicationDbContext context)
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         #region Category GET
@@ -22,7 +23,7 @@ namespace BulkyBook_WebAPI.Controllers
         {
             try
             {
-                var categories = await _context.Category.ToListAsync();
+                var categories = _unitOfWork.Category.GetAll();
 
                 // Validate categories
                 if (categories == null || !categories.Any())
@@ -58,7 +59,7 @@ namespace BulkyBook_WebAPI.Controllers
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
 
-            var category = await _context.Category.FirstOrDefaultAsync(p => p.CategoryID == CategoryID);
+            var category = _unitOfWork.Category.Get(p => p.CategoryID == CategoryID);
 
             // Validate category
             if (category == null)
@@ -85,8 +86,8 @@ namespace BulkyBook_WebAPI.Controllers
                     });
                 }
 
-                _context.Category.Add(category);
-                await _context.SaveChangesAsync();
+                await _unitOfWork.Category.Add(category);
+                await _unitOfWork.Save();
                 return Ok(new
                 {
                     StatusCode = 200,
@@ -110,7 +111,7 @@ namespace BulkyBook_WebAPI.Controllers
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
 
-            var newCategory = await _context.Category.FindAsync(category.CategoryID);
+            var newCategory =  _unitOfWork.Category.Get(p => p.CategoryID == category.CategoryID);
 
             // Validate newCategory
             if (newCategory == null)
@@ -121,7 +122,7 @@ namespace BulkyBook_WebAPI.Controllers
             newCategory.CategoryName = category.CategoryName;
             newCategory.CategoryOrder = category.CategoryOrder;
 
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Save();
             return Ok(new { StatusCode = 200, Message = "Category Updated successfully" });
         }
         #endregion
@@ -136,15 +137,15 @@ namespace BulkyBook_WebAPI.Controllers
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
 
-            var category = await _context.Category.FindAsync(CategoryID);
+            var category =  _unitOfWork.Category.Get(p => p.CategoryID == CategoryID);
 
             // Validate category
             if (category == null)
             {
                 return NotFound(new { StatusCode = 404, Message = "Not Found" });
             }
-            _context.Category.Remove(category);
-            await _context.SaveChangesAsync();
+            await _unitOfWork.Category.Remove(category);
+            await _unitOfWork.Save();
             return Ok(new { StatusCode = 200, Message = "Category deleted successfully" });
         }
         #endregion

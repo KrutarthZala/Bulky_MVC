@@ -1,4 +1,6 @@
 using BulkyBook_WebAPI.Data;
+using BulkyBook_WebAPI.Implementation;
+using BulkyBook_WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook_WebAPI
@@ -18,6 +20,8 @@ namespace BulkyBook_WebAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 
