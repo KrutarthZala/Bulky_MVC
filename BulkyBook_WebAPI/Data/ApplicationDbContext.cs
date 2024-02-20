@@ -25,6 +25,31 @@ namespace BulkyBook_WebAPI.Data
                 entity.Property(e => e.CategoryOrder).HasColumnName("CategoryOrder");
 
             });
+
+            modelBuilder.Entity<ProductModel>(entity =>
+            {
+                // Configure primary key
+                entity.HasKey(e => e.ProductID);
+
+                entity.ToTable("Products");
+
+                // Configure properties
+                entity.Property(e => e.ProductTitle).HasMaxLength(255);
+                entity.Property(e => e.ProductDescription).HasMaxLength(500);
+                entity.Property(e => e.ProductISBN).HasMaxLength(50);
+                entity.Property(e => e.ProductAuthor).HasMaxLength(100);
+                entity.Property(e => e.ProductListPrice).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.ProductPrice).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.ProductPrice50).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.ProductPrice100).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.ProductImageURL).HasMaxLength(255);
+
+                // Configure relationships
+                entity.HasOne(e => e.Category)
+                      .WithMany()
+                      .HasForeignKey(e => e.CategoryID)
+                      .IsRequired(false); // Assuming Category is optional
+            });
         }
     }
 }
