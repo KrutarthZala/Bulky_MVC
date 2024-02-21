@@ -31,7 +31,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult UpsertCompany(int? CompanyID)
         {
             // Check the value of CompanyID
-            if( CompanyID < 0)
+            if( CompanyID == null || CompanyID < 0)
             {
                 // Return Create View
                 return View(new CompanyModel());
