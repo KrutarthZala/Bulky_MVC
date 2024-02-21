@@ -9,10 +9,12 @@ using System.Linq;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
+    // Define Area and Authorize role.
     [Area("Admin")]
     [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
+        // Instance of Dependency Injection
         private readonly IUnitOfWork _unitOfWork;
         private readonly IWebHostEnvironment _webHostEnvironment;
         public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
@@ -24,15 +26,16 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         #region Display Product
         public IActionResult Index()
         {
-            List<ProductModel> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-
-            return View(objProductList);
+            // Retrieve List of products
+            List<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return View(productList);
         }
         #endregion
 
         #region Create and Edit / Upsert Product
         public IActionResult UpsertProduct(int? productID)
         {
+            // Retrieve Category List for display Category Name
             IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll()
                 .Select(u => new SelectListItem
                 {
@@ -40,6 +43,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     Value = u.CategoryID.ToString()
                 });
 
+            // Example of ViewBag and ViewData
             // ViewBag.CategoryList = CategoryList;   
             // ViewData["CategoryList"] = CategoryList;
 
@@ -108,7 +112,6 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             return View();
         }
         #endregion
-
 
         #region Product API Call
         [HttpGet]

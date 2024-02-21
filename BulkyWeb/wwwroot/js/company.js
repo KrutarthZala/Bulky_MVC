@@ -1,7 +1,8 @@
+// Declare variable.
 let dataTable;
 
 $(document).ready(function () {
-    // Call loadDataTable to initialize DataTable after DOM is ready
+    // Call loadDataTable to initialize DataTable
     loadDataTable();
 });
 
@@ -36,6 +37,7 @@ function loadDataTable() {
     });
 }
 
+// Code of Sweet Alert
 function DeleteCompany(companyURL) {
     Swal.fire({
         title: "Are you sure?",
