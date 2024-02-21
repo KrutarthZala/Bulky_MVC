@@ -4,7 +4,7 @@ using BulkyBook_WebAPI.Services;
 
 namespace BulkyBook_WebAPI.Implementation
 {
-    public class CategoryService : Service<CategoryModel>, ICategoryService
+    public class CategoryService : Service<CategoryModel>
     {
         private readonly ApplicationDbContext _db;
         public CategoryService(ApplicationDbContext db) : base(db)

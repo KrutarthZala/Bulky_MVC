@@ -110,7 +110,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         #endregion
 
 
-        #region API Call
+        #region Product API Call
         [HttpGet]
         public IActionResult GetAllProducts()
         {
@@ -120,6 +120,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         }
         #endregion
 
+        #region Delete Product
         [HttpDelete]
         public IActionResult DeleteProduct(int productID)
         {
@@ -142,5 +143,6 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             return Json(new { success = true, message = "Delete Successful" });
 
         }
+        #endregion
     }
 }

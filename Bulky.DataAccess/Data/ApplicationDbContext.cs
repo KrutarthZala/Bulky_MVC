@@ -27,6 +27,38 @@ namespace BulkyBook.DataAccess.Data
                 new CategoryModel { CategoryID=3, CategoryName="Comics", CategoryOrder=3 }
                 );
 
+            modelBuilder.Entity<CompanyModel>().HasData(
+                new CompanyModel { 
+                    CompanyID = 1, 
+                    CompanyName = "ABC Corporation", 
+                    CompanyStreetAddress = "123 Main Street",
+                    CompanyCity = "Anytown",
+                    CompanyState = "CA",
+                    CompanyPostalCode = "12345",
+                    CompanyPhoneNumber = "555-123-4567"
+                },
+                new CompanyModel
+                {
+                    CompanyID = 2,
+                    CompanyName = "Acme Widgets",
+                    CompanyStreetAddress = "789 Oak Road",
+                    CompanyCity = "Otherburg",
+                    CompanyState = "TX",
+                    CompanyPostalCode = "67890",
+                    CompanyPhoneNumber = "555-555-1212"
+                },
+                new CompanyModel
+                {
+                    CompanyID = 3,
+                    CompanyName = "MegaCorp",
+                    CompanyStreetAddress = "101 Pine Street",
+                    CompanyCity = "Bigcity",
+                    CompanyState = "FL",
+                    CompanyPostalCode = "13579",
+                    CompanyPhoneNumber = "555-999-8888"
+                }
+                );
+
             modelBuilder.Entity<ProductModel>().HasData(
                 new ProductModel
                 { 
