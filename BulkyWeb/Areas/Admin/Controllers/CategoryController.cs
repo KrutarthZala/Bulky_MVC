@@ -1,5 +1,4 @@
-﻿using BulkyBook.DataAccess.Data;
-using BulkyBook.DataAccess.Repository.IRepository;
+﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -55,7 +54,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult EditCategory(int? categoryID)
         {
             // CategoryID Validation
-            if (categoryID < 0)
+            if (categoryID == null || categoryID < 0)
             {
                 return NotFound();
             }
@@ -96,7 +95,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         public IActionResult DeleteCategory(int? categoryID)
         {
             // Check CategoryID Validations
-            if (categoryID < 0)
+            if (categoryID == null || categoryID < 0)
             {
                 return NotFound();
             }

@@ -1,15 +1,10 @@
 ﻿using BulkyBook.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulkyBook.DataAccess.Repository.IRepository
 {
+    // Implement IRepository Interface with Category Model
     public interface ICategoryRepository : IRepository<CategoryModel>
     {
         void Update(CategoryModel objCategory);
-
     }
 }

@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace BulkyBook.DataAccess.Repository.IRepository
 {
+    // Use Generics because of multiple classes
     public interface IRepository<T> where T : class
     {
         // T - Category, T - Product, T - Company

@@ -12,6 +12,7 @@ namespace BulkyBook.DataAccess.Data
             
         }
 
+        // Set Database properties
         public DbSet<CategoryModel> Categories { get; set; }
         public DbSet<ProductModel> Products { get; set; }
         public DbSet<CompanyModel> Companies { get; set; }
@@ -21,12 +22,15 @@ namespace BulkyBook.DataAccess.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            #region Data of Category Table
             modelBuilder.Entity<CategoryModel>().HasData(
                 new CategoryModel { CategoryID=1, CategoryName="Action", CategoryOrder=1 },
                 new CategoryModel { CategoryID=2, CategoryName="SciFi" , CategoryOrder=2 },
                 new CategoryModel { CategoryID=3, CategoryName="Comics", CategoryOrder=3 }
                 );
+            #endregion
 
+            #region Data of Company Table
             modelBuilder.Entity<CompanyModel>().HasData(
                 new CompanyModel { 
                     CompanyID = 1, 
@@ -58,7 +62,9 @@ namespace BulkyBook.DataAccess.Data
                     CompanyPhoneNumber = "555-999-8888"
                 }
                 );
+            #endregion
 
+            #region Data of Product Model
             modelBuilder.Entity<ProductModel>().HasData(
                 new ProductModel
                 { 
@@ -145,6 +151,7 @@ namespace BulkyBook.DataAccess.Data
                     ProductImageURL = ""
                 }
                 );
+            #endregion
         }
     }
 }

@@ -17,12 +17,14 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
+        // Display Home Page.
         public IActionResult Index()
         {
             IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category");
             return View(productList);
         }
 
+        // Display Details Page 
         public IActionResult Details(int productID)
         {
             ProductModel product = _unitOfWork.Product.Get(u => u.ProductID == productID,includeProperties: "Category");

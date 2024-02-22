@@ -72,10 +72,14 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Derive path of wwwroot folder
                 string wwwRootPath = _webHostEnvironment.WebRootPath;
                 if(file != null)
                 {
+                    // Assign new name to image
                     string productFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+
+                    // Save image path
                     string productPath = Path.Combine(wwwRootPath, @"images\product");
 
                     if(!string.IsNullOrEmpty(ProductObj.Product.ProductImageURL)) 
@@ -95,6 +99,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                     }
                     ProductObj.Product.ProductImageURL = @"\images\product\" + productFileName;
                 }
+
                 if(ProductObj.Product.ProductID == 0)
                 {
                     _unitOfWork.Product.Add(ProductObj.Product);
@@ -117,8 +122,11 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            List<ProductModel> objProductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-            return Json(new {data =  objProductList});
+            // Retrieve product list with category names
+            List<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+
+            // Return list in JSON format
+            return Json(new {data =  productList});
 
         }
         #endregion
@@ -133,17 +141,19 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
                 return Json(new { success= false , message="Error While Deleting"});
             }
 
-            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, productToBeDeleted.ProductImageURL.TrimStart('\\'));
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath, (productToBeDeleted?.ProductImageURL ?? "").TrimStart('\\'));
 
             if (System.IO.File.Exists(oldImagePath))
             {
                 System.IO.File.Delete(oldImagePath);
             }
+            if(productToBeDeleted != null)
+            {
+                _unitOfWork.Product.Remove(productToBeDeleted);
+                _unitOfWork.Save(); 
+            }
 
-            _unitOfWork.Product.Remove(productToBeDeleted);
-            _unitOfWork.Save();
-
-            return Json(new { success = true, message = "Delete Successful" });
+            return Json(new { success = true, message = "Product Deleted Successfully" });
 
         }
         #endregion

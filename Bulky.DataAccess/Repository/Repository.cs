@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 
 namespace BulkyBook.DataAccess.Repository
 {
+    // Implement IRepository interface
     public class Repository<T> : IRepository<T> where T : class
     {
         private readonly ApplicationDbContext _db;
@@ -21,6 +22,7 @@ namespace BulkyBook.DataAccess.Repository
             dbSet.Add(entity);
         }
 
+        #region Get Specific Data
         public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
@@ -34,7 +36,9 @@ namespace BulkyBook.DataAccess.Repository
             }
             return query.FirstOrDefault();
         }
+        #endregion
 
+        #region Get All Data
         // Pass Category, CategoryType in method.
         public IEnumerable<T> GetAll(string? includeProperties = null)
         {
@@ -48,15 +52,20 @@ namespace BulkyBook.DataAccess.Repository
             }
             return query.ToList();
         }
+        #endregion
 
+        #region Remove Specific Data
         public void Remove(T entity)
         {
             dbSet.Remove(entity);
         }
+        #endregion
 
+        #region Remove Range of Data
         public void RemoveRange(IEnumerable<T> entity)
         {
             dbSet.RemoveRange(entity);
         }
+        #endregion
     }
 }
