@@ -21,10 +21,9 @@ namespace BulkyBook_WebAPI.Implementation
             return query.ToListAsync();  
         }
 
-        public CategoryModel GetCategory(CategoryModel category)
+        public CategoryModel? GetCategory(int categoryID)
         {
-            //return _dbCategory.Where(c => c.CategoryID == category.CategoryID).FirstOrDefault();
-            
+            return  _dbCategory.Set<CategoryModel>().Where(c => c.CategoryID == categoryID).FirstOrDefault();
         }
 
         public async Task InsertCategory(CategoryModel category)

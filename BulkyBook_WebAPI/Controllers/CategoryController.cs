@@ -63,7 +63,7 @@ namespace BulkyBook_WebAPI.Controllers
             }
 
             //var category = _unitOfWork.Category.Get(p => p.CategoryID == CategoryID);
-            var category = _categoryService.GetCategory(p => p.CategoryID == CategoryID);
+            var category = _categoryService.GetCategory(CategoryID);
 
             // Validate category
             if (category == null)
@@ -119,7 +119,7 @@ namespace BulkyBook_WebAPI.Controllers
             }
 
             //var newCategory =  _unitOfWork.Category.Add(p => p.CategoryID == category.CategoryID);
-            var newCategory =  _categoryService.GetCategory(p => p.CategoryID == category.CategoryID);
+            var newCategory =  _categoryService.GetCategory(category.CategoryID);
 
             // Validate newCategory
             if (newCategory == null)
@@ -146,7 +146,7 @@ namespace BulkyBook_WebAPI.Controllers
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
 
-            var category =  _categoryService.GetCategory(p => p.CategoryID == CategoryID);
+            var category =  _categoryService.GetCategory(CategoryID);
 
             // Validate category
             if (category == null)
