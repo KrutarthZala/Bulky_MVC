@@ -21,7 +21,7 @@ namespace BulkyBook_WebAPI.Implementation
             return query.ToListAsync();  
         }
 
-        public CategoryModel? GetCategory(int categoryID)
+        public CategoryModel? GetCategory(int? categoryID)
         {
             return  _dbCategory.Set<CategoryModel>().Where(c => c.CategoryID == categoryID).FirstOrDefault();
         }
@@ -34,7 +34,6 @@ namespace BulkyBook_WebAPI.Implementation
         public async Task UpdateCategory(CategoryModel category)
         {
             _dbCategory.Update(category);
-            _dbCategory.SaveChanges();
         }
         public async Task DeleteCategory(CategoryModel category)
         {
@@ -43,7 +42,7 @@ namespace BulkyBook_WebAPI.Implementation
 
         public async Task SaveCategory()
         {
-            _dbCategory.SaveChanges();
+            await _dbCategory.SaveChangesAsync();
         }
     }
 }
