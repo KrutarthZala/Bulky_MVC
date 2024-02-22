@@ -15,22 +15,21 @@ namespace BulkyBook_WebAPI.Implementation
             _dbCategory = dbCategory;
         }
 
-        public IEnumerable<CategoryModel> GetCategories()
+        public Task<List<CategoryModel>> GetCategories()
         {
             IQueryable<CategoryModel> query = _dbCategory.Set<CategoryModel>();
-            return query.ToList();  
+            return query.ToListAsync();  
         }
 
-        public CategoryModel GetCategory(Expression<Func<CategoryModel, bool>> filter)
+        public CategoryModel GetCategory(CategoryModel category)
         {
-            IQueryable<CategoryModel> query = _dbCategory.Set<CategoryModel>();
-            query = query.Where(filter);
-            return query.FirstOrDefault();
+            //return _dbCategory.Where(c => c.CategoryID == category.CategoryID).FirstOrDefault();
+            
         }
 
         public async Task InsertCategory(CategoryModel category)
         {
-            _dbCategory.Add(category);
+            await _dbCategory.AddAsync(category);
         }
 
         public async Task UpdateCategory(CategoryModel category)

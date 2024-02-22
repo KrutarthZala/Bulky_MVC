@@ -5,8 +5,8 @@ namespace BulkyBook_WebAPI.Services
 {
     public interface ICategoryService /*: IService<CategoryModel>*/
     {
-        IEnumerable<CategoryModel> GetCategories(); 
-        CategoryModel GetCategory(Expression<Func<CategoryModel, bool>> filter);
+        Task <List<CategoryModel>> GetCategories(); 
+        CategoryModel GetCategory(CategoryModel category);
         Task InsertCategory(CategoryModel category);
         Task UpdateCategory(CategoryModel category);
         Task DeleteCategory(CategoryModel category);
