@@ -21,7 +21,8 @@ namespace BulkyBook_WebAPI
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            //builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
 
             var app = builder.Build();
 
