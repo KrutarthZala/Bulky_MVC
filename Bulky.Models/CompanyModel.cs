@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulkyBook.Models
 {
@@ -15,7 +10,7 @@ namespace BulkyBook.Models
 
         [Required]
         [DisplayName("Company Name")]
-        public string CompanyName { get; set; }
+        public string? CompanyName { get; set; }
 
         [DisplayName("Street Address")]
         public string? CompanyStreetAddress { get; set; }

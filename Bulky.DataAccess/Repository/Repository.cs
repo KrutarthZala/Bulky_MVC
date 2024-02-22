@@ -27,6 +27,8 @@ namespace BulkyBook.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
             query = query.Where(filter);
+
+            // Check if any properties are null or not.
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var includeProp in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))

@@ -1,11 +1,6 @@
 ﻿using BulkyBook.DataAccess.Data;
 using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BulkyBook.DataAccess.Repository
 {
@@ -16,8 +11,11 @@ namespace BulkyBook.DataAccess.Repository
         {
             _db = db;
         }
+
+        #region Update Product
         public void Update(ProductModel objProduct)
         {
+            // Manually update product for Image URL and Safety
             var objFromDb = _db.Products.FirstOrDefault(u => u.ProductID == objProduct.ProductID);
             if (objFromDb != null)
             {
@@ -36,5 +34,6 @@ namespace BulkyBook.DataAccess.Repository
                 }
             }
         }
+        #endregion
     }
 }
