@@ -70,16 +70,16 @@ namespace BulkyBook_WebAPI.Controllers
             }
             return Ok(new { StatusCode = 200, Message = "Success", Data = Product });
         }
-        #endregion
+        #endregion 
 
         #region Product POST / Add Product
         [HttpPost]
-        public async Task<IActionResult> PostProduct(ProductModel Product)
+        public async Task<IActionResult> PostProduct(IFormFile image, string productDetailsJson)
         {
             try
             {
                 // Validate Product
-                if (Product == null)
+                if (productDetailsJson == null)
                 {
                     return BadRequest(new
                     {
@@ -91,7 +91,7 @@ namespace BulkyBook_WebAPI.Controllers
                 //await _unitOfWork.Product.Add(Product);
                 //await _unitOfWork.Save();
 
-                await _productService.InsertProduct(Product);
+                await _productService.InsertProduct(image, productDetailsJson);
                 await _productService.SaveProduct();
                 return Ok(new
                 {
@@ -108,10 +108,10 @@ namespace BulkyBook_WebAPI.Controllers
 
         #region Product PUT / Update Product
         [HttpPut]
-        public async Task<IActionResult> PutProduct(ProductModel product)
+        public async Task<IActionResult> PutProduct(/*ProductModel product*/IFormFile image, string productDetailsJson, int productId)
         {
             // Validate ProductID and Product
-            if (product == null || product.ProductID == 0)
+            if (productDetailsJson == null || productId == 0)
             {
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
@@ -120,7 +120,7 @@ namespace BulkyBook_WebAPI.Controllers
             //newProduct.ProductOrder = Product.ProductOrder;
 
             // await _unitOfWork.Save();
-            await _productService.UpdateProduct(product);
+            await _productService.UpdateProduct(/*product*/image, productDetailsJson, productId);
             await _productService.SaveProduct();
             return Ok(new { StatusCode = 200, Message = "Product Updated successfully" });
         }

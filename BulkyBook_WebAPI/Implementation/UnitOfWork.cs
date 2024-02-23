@@ -13,7 +13,7 @@ namespace BulkyBook_WebAPI.Implementation
         {
             _db = db;
             Category = new CategoryService(_db);
-            Product = new ProductService(_db);  
+            //Product = new ProductService(_db);  
         }
         public async Task Save()
         {
