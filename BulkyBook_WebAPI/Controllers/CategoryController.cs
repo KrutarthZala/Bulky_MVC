@@ -1,8 +1,6 @@
-﻿using BulkyBook_WebAPI.Data;
-using BulkyBook_WebAPI.Models;
+﻿using BulkyBook_WebAPI.Models;
 using BulkyBook_WebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace BulkyBook_WebAPI.Controllers
 {
@@ -26,7 +24,7 @@ namespace BulkyBook_WebAPI.Controllers
             try
             {
                 //var categories = _unitOfWork.Category.GetAll();
-                var categories = _categoryService.GetCategories();
+                var categories = await _categoryService.GetCategories();
 
                 // Validate categories
                 if (categories == null || !categories.Any())
@@ -63,7 +61,7 @@ namespace BulkyBook_WebAPI.Controllers
             }
 
             //var category = _unitOfWork.Category.Get(p => p.CategoryID == CategoryID);
-            var category = _categoryService.GetCategory(CategoryID);
+            var category = await  _categoryService.GetCategory(CategoryID);
 
             // Validate category
             if (category == null)
@@ -110,7 +108,7 @@ namespace BulkyBook_WebAPI.Controllers
 
         #region Category PUT / Update Category
         [HttpPut]
-        public async Task<IActionResult> PutProduct(CategoryModel category)
+        public async Task<IActionResult> PutCategory(CategoryModel category)
         {
             // Validate CategoryID and category
             if (category == null || category.CategoryID == 0)
@@ -118,19 +116,11 @@ namespace BulkyBook_WebAPI.Controllers
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
 
-            //var newCategory =  _unitOfWork.Category.Add(p => p.CategoryID == category.CategoryID);
-            var newCategory =  _categoryService.GetCategory(category.CategoryID);
-
-            // Validate newCategory
-            if (newCategory == null)
-            {
-                return NotFound(new { StatusCode = 404, Message = "Not Found" });
-            }
-
-            newCategory.CategoryName = category.CategoryName;
-            newCategory.CategoryOrder = category.CategoryOrder;
+            //newCategory.CategoryName = category.CategoryName;
+            //newCategory.CategoryOrder = category.CategoryOrder;
 
             // await _unitOfWork.Save();
+            await _categoryService.UpdateCategory(category);
             await _categoryService.SaveCategory();
             return Ok(new { StatusCode = 200, Message = "Category Updated successfully" });
         }
@@ -146,7 +136,7 @@ namespace BulkyBook_WebAPI.Controllers
                 return BadRequest(new { StatusCode = 400, Message = "Bad Request" });
             }
 
-            var category =  _categoryService.GetCategory(CategoryID);
+            var category = await _categoryService.GetCategory(CategoryID);
 
             // Validate category
             if (category == null)

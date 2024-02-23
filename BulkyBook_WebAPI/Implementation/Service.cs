@@ -36,7 +36,7 @@ namespace BulkyBook_WebAPI.Implementation
 
         public async Task Remove(T entity)
         {
-            dbSet.Remove(entity);
+            await Task.Run(() => dbSet.Remove(entity));
         }
     }
 }

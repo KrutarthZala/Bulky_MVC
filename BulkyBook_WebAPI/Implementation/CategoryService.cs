@@ -2,8 +2,6 @@
 using BulkyBook_WebAPI.Models;
 using BulkyBook_WebAPI.Services;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Linq.Expressions;
 
 namespace BulkyBook_WebAPI.Implementation
 {
@@ -21,9 +19,9 @@ namespace BulkyBook_WebAPI.Implementation
             return query.ToListAsync();  
         }
 
-        public CategoryModel? GetCategory(int? categoryID)
+        public async Task<CategoryModel?> GetCategory(int? categoryID)
         {
-            return  _dbCategory.Set<CategoryModel>().Where(c => c.CategoryID == categoryID).FirstOrDefault();
+            return await  _dbCategory.Set<CategoryModel>().Where(c => c.CategoryID == categoryID).FirstOrDefaultAsync();
         }
 
         public async Task InsertCategory(CategoryModel category)
@@ -33,11 +31,11 @@ namespace BulkyBook_WebAPI.Implementation
 
         public async Task UpdateCategory(CategoryModel category)
         {
-            _dbCategory.Update(category);
+            await Task.Run(() => _dbCategory.Update(category));
         }
         public async Task DeleteCategory(CategoryModel category)
         {
-            _dbCategory.Remove(category);
+            await Task.Run(() => _dbCategory.Remove(category));
         }
 
         public async Task SaveCategory()

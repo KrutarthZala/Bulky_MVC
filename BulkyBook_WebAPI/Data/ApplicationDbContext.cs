@@ -38,10 +38,10 @@ namespace BulkyBook_WebAPI.Data
                 entity.Property(e => e.ProductDescription).HasMaxLength(500);
                 entity.Property(e => e.ProductISBN).HasMaxLength(50);
                 entity.Property(e => e.ProductAuthor).HasMaxLength(100);
-                entity.Property(e => e.ProductListPrice).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.ProductPrice).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.ProductPrice50).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.ProductPrice100).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.ProductListPrice).HasColumnType("double");
+                entity.Property(e => e.ProductPrice).HasColumnType("double");
+                entity.Property(e => e.ProductPrice50).HasColumnType("double");
+                entity.Property(e => e.ProductPrice100).HasColumnType("double");
                 entity.Property(e => e.ProductImageURL).HasMaxLength(255);
 
                 // Configure relationships
