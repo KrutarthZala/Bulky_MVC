@@ -42,7 +42,7 @@ namespace BulkyBook.DataAccess.Repository
 
         #region Get All Data
         // Pass Category, CategoryType in method.
-        public IEnumerable<T> GetAll(string? includeProperties = null)
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             if(!string.IsNullOrEmpty(includeProperties))
