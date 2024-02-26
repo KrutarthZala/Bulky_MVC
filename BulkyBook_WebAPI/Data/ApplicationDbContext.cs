@@ -14,6 +14,7 @@ namespace BulkyBook_WebAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            #region Category Table Mapping
             modelBuilder.Entity<CategoryModel>(entity =>
             {
                 entity.HasKey(e => e.CategoryID);
@@ -25,7 +26,9 @@ namespace BulkyBook_WebAPI.Data
                 entity.Property(e => e.CategoryOrder).HasColumnName("CategoryOrder");
 
             });
+            #endregion
 
+            #region Product Table Mapping
             modelBuilder.Entity<ProductModel>(entity =>
             {
                 // Configure primary key
@@ -50,6 +53,22 @@ namespace BulkyBook_WebAPI.Data
                       .HasForeignKey(e => e.CategoryID)
                       .IsRequired(false); // Assuming Category is optional
             });
+            #endregion
+
+            #region Company Table Mapping
+            modelBuilder.Entity<CompanyModel>(entity =>
+            {
+                entity.ToTable("Companies");
+
+                entity.HasKey(e => e.CompanyID);
+                entity.Property(e => e.CompanyName).HasMaxLength(255);
+                entity.Property(e => e.CompanyStreetAddress).HasMaxLength(255);
+                entity.Property(e => e.CompanyCity).HasMaxLength(100);
+                entity.Property(e => e.CompanyState).HasMaxLength(2);
+                entity.Property(e => e.CompanyPostalCode).HasMaxLength(10);
+                entity.Property(e => e.CompanyPhoneNumber).HasMaxLength(20);
+            });
+            #endregion
         }
     }
 }
