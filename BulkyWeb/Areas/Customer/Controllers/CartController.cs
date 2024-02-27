@@ -1,6 +1,7 @@
 ﻿using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
 using BulkyBook.Models.ViewModels;
+using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,6 +13,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
     public class CartController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+        [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
 
         public CartController(IUnitOfWork unitOfWork)
@@ -27,24 +29,117 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             ShoppingCartVM = new()
             {
                 ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.BulkyBookUserID == bulkyBookUserID, includeProperties: "Product"),
+                OrderHeader = new()
             };
 
             foreach(var cart in ShoppingCartVM.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
-                ShoppingCartVM.OrderTotal += (cart.Price * cart.ProductCount);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.ProductCount);
             }
 
             return View(ShoppingCartVM);
         }
 
-        public IActionResult CartSummary()
+		#region Cart Summary GET
+		public IActionResult CartSummary()
         {
-            return View();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var bulkyBookUserID = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ShoppingCartVM = new()
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.BulkyBookUserID == bulkyBookUserID, includeProperties: "Product"),
+                OrderHeader = new()
+            };
+
+            ShoppingCartVM.OrderHeader.BulkyBookUser = _unitOfWork.BulkyBookUser.Get(u => u.Id == bulkyBookUserID);
+
+            ShoppingCartVM.OrderHeader.UserName = ShoppingCartVM.OrderHeader.BulkyBookUser.BulkyBookUserName;
+            ShoppingCartVM.OrderHeader.UserPhoneNumber = ShoppingCartVM.OrderHeader.BulkyBookUser.PhoneNumber;
+            ShoppingCartVM.OrderHeader.UserStreetAddress = ShoppingCartVM.OrderHeader.BulkyBookUser.UserStreetAddress;
+            ShoppingCartVM.OrderHeader.UserCity = ShoppingCartVM.OrderHeader.BulkyBookUser.UserCity;
+            ShoppingCartVM.OrderHeader.UserState = ShoppingCartVM.OrderHeader.BulkyBookUser.UserState;
+            ShoppingCartVM.OrderHeader.UserPostalCode = ShoppingCartVM.OrderHeader.BulkyBookUser.UserPostalCode;
+
+
+            foreach (var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+                ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.ProductCount);
+            }
+
+            return View(ShoppingCartVM);
+        }
+		#endregion
+
+		#region Cart Summary POST
+		[HttpPost]
+        [ActionName("CartSummary")]
+		public IActionResult CartSummaryPOST()
+		{
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+			var bulkyBookUserID = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            ShoppingCartVM.ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(u => u.BulkyBookUserID == bulkyBookUserID, includeProperties: "Product");
+
+            ShoppingCartVM.OrderHeader.OrderDate = System.DateTime.Now;
+            ShoppingCartVM.OrderHeader.BulkyBookUserID = bulkyBookUserID;
+
+			BulkyBookUser bulkyBookUser = _unitOfWork.BulkyBookUser.Get(u => u.Id == bulkyBookUserID);
+
+			foreach (var cart in ShoppingCartVM.ShoppingCartList)
+			{
+				cart.Price = GetPriceBasedOnQuantity(cart);
+				ShoppingCartVM.OrderHeader.OrderTotal += (cart.Price * cart.ProductCount);
+			}
+
+            if(bulkyBookUser.CompanyID.GetValueOrDefault() == 0)
+            {
+                // This is a regular customer account
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusPending;
+                ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusPending;
+            }
+            else
+            {
+                // This is company user
+                ShoppingCartVM.OrderHeader.OrderStatus = SD.StatusApproved;
+                ShoppingCartVM.OrderHeader.PaymentStatus = SD.PaymentStatusDelayedPayment;
+            }
+            _unitOfWork.OrderHeader.Add(ShoppingCartVM.OrderHeader);
+            _unitOfWork.Save();
+
+            // Get Order Detail
+            foreach(var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                OrderDetailModel orderDetail = new()
+                {
+                    ProductID = cart.ProductID,
+                    OrderHeaderID = ShoppingCartVM.OrderHeader.OrderHeaderID,
+                    ProductPrice = cart.Price,
+                    ProductCount = cart.ProductCount
+                };
+                _unitOfWork.OrderDetail.Add(orderDetail);
+                _unitOfWork.Save();
+            }
+
+			if (bulkyBookUser.CompanyID.GetValueOrDefault() == 0)
+			{
+				// This is a regular customer account
+			}
+
+			return RedirectToAction(nameof(OrderConformation), new { orderHeaderID = ShoppingCartVM.OrderHeader.OrderHeaderID});
+		}
+		#endregion
+
+        public IActionResult OrderConformation(int orderHeaderID)
+        {
+            return View(orderHeaderID);
         }
 
-        #region Add Cart
-        public IActionResult AddCart(int cartID)
+
+		#region Add Cart
+		public IActionResult AddCart(int cartID)
         {
             var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.CartID == cartID);
             cartFromDb.ProductCount += 1;
