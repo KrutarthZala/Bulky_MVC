@@ -8,6 +8,8 @@
         ICompanyRepository Company { get; }
         IShoppingCartRepository ShoppingCart { get; }
         IBulkyBookUserRepository BulkyBookUser { get; }
+        IOrderHeaderRepository OrderHeader { get; }
+        IOrderDetailRepository OrderDetail { get; }
         void Save();
     }
 }
