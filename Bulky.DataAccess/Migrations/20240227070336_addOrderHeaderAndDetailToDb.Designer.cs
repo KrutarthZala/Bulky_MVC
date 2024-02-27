@@ -4,6 +4,7 @@ using BulkyBook.DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BulkyBook.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240227070336_addOrderHeaderAndDetailToDb")]
+    partial class addOrderHeaderAndDetailToDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace BulkyBook.DataAccess.Migrations
 
                     b.HasKey("CategoryID");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
 
                     b.HasData(
                         new
@@ -92,7 +95,7 @@ namespace BulkyBook.DataAccess.Migrations
 
                     b.HasKey("CompanyID");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
 
                     b.HasData(
                         new
@@ -153,7 +156,7 @@ namespace BulkyBook.DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("BulkyBook.Models.OrderHeader", b =>
@@ -226,7 +229,7 @@ namespace BulkyBook.DataAccess.Migrations
 
                     b.HasIndex("BulkyBookUserID");
 
-                    b.ToTable("OrderHeaders", (string)null);
+                    b.ToTable("OrderHeaders");
                 });
 
             modelBuilder.Entity("BulkyBook.Models.ProductModel", b =>
@@ -275,7 +278,7 @@ namespace BulkyBook.DataAccess.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
 
                     b.HasData(
                         new
@@ -388,7 +391,7 @@ namespace BulkyBook.DataAccess.Migrations
 
                     b.HasIndex("ProductID");
 
-                    b.ToTable("ShoppingCarts", (string)null);
+                    b.ToTable("ShoppingCarts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

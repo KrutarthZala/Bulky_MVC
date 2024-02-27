@@ -18,6 +18,8 @@ namespace BulkyBook.DataAccess.Data
         public DbSet<CompanyModel> Companies { get; set; }
         public DbSet<ShoppingCartModel> ShoppingCarts { get; set; }
         public DbSet<BulkyBookUser> BulkyBookUsers { get; set; }
+        public DbSet<OrderHeaderModel> OrderHeaders { get; set; }
+        public DbSet<OrderDetailModel> OrderDetails { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
