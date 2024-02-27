@@ -39,17 +39,17 @@
                                 </div>
                                 <div class="col-6 col-sm-4 col-lg-6 pt-2">
                                     <div class="w-75 btn-group" role="group">
-                                        <a class="btn btn-outline-primary bg-gradient py-2">
+                                        <a asp-action="AddCart" asp-route-CartID="@item.CartID" class="btn btn-outline-primary bg-gradient py-2">
                                             <i class="bi bi-plus-square"></i>
                                         </a> &nbsp;
-                                        <a class="btn btn-outline-primary bg-gradient py-2">
+                                        <a asp-action="SubtractCart" asp-route-CartID="@item.CartID" class="btn btn-outline-primary bg-gradient py-2">
                                             <i class="bi bi-dash-square"></i>
                                         </a>
                                     </div>
 
                                 </div>
                                 <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-                                    <a href="#" class="btn btn-danger bg-gradient py-2 ">
+                                    <a asp-action="DeleteCart" asp-route-CartID="@item.CartID" class="btn btn-danger bg-gradient py-2 ">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>
                                 </div>
@@ -72,7 +72,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2 offset-md-5">
-                        <a href="#" class="btn btn-primary border-0 bg-gradient w-100">Summary</a>
+                        <a asp-action="CartSummary" class="btn btn-primary border-0 bg-gradient w-100">Summary</a>
                     </div>
                 </div>
             </div>
