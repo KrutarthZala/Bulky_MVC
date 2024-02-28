@@ -4,6 +4,8 @@ using BulkyBook.Models.ViewModels;
 using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Stripe;
+using Stripe.Checkout;
 using System.Security.Claims;
 
 namespace BulkyBookWeb.Areas.Customer.Controllers
@@ -21,7 +23,8 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult Index()
+		#region Index Method
+		public IActionResult Index()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var bulkyBookUserID = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -40,6 +43,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
 
             return View(ShoppingCartVM);
         }
+		#endregion
 
 		#region Cart Summary GET
 		public IActionResult CartSummary()
@@ -123,20 +127,78 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
+			#region Stripe Logic For Payment
 			if (bulkyBookUser.CompanyID.GetValueOrDefault() == 0)
 			{
-				// This is a regular customer account
+                // This is a regular customer account with stripe logic.
+                var domain = "https://localhost:7163/";
+				var options = new Stripe.Checkout.SessionCreateOptions
+				{
+					SuccessUrl = domain+$"Customer/Cart/OrderConformation?orderHeaderID={ShoppingCartVM.OrderHeader.OrderHeaderID}",
+                    CancelUrl = domain+"Customer/Cart/Index",
+					LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
+					BillingAddressCollection = "required", // Collect the billing address
+					ShippingAddressCollection = new SessionShippingAddressCollectionOptions(),
+					Mode = "payment",
+				};
+
+                foreach(var item in ShoppingCartVM.ShoppingCartList)
+                {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+                            UnitAmount = (long)(item.Price * 100), // Rs. 20.50 => 2050
+                            Currency = "inr",
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
+                                Name = item.Product.ProductTitle
+                            }
+                        },
+                        Quantity = item.ProductCount
+                    };
+                    options.LineItems.Add(sessionLineItem);
+                }
+
+				var service = new Stripe.Checkout.SessionService();
+				Session session = service.Create(options);
+                _unitOfWork.OrderHeader.UpdateStripePaymentID(ShoppingCartVM.OrderHeader.OrderHeaderID, session.Id, session.PaymentIntentId);
+                _unitOfWork.Save();
+                Response.Headers.Add("Location",session.Url);
+                return new StatusCodeResult(303);
 			}
+			#endregion
 
 			return RedirectToAction(nameof(OrderConformation), new { orderHeaderID = ShoppingCartVM.OrderHeader.OrderHeaderID});
 		}
 		#endregion
 
-        public IActionResult OrderConformation(int orderHeaderID)
+		#region Order Conformation
+		public IActionResult OrderConformation(int orderHeaderID)
         {
+            OrderHeaderModel orderHeaderModel = _unitOfWork.OrderHeader.Get(u => u.OrderHeaderID == orderHeaderID,includeProperties:"BulkyBookUser");
+            if(orderHeaderModel.PaymentStatus != SD.PaymentStatusDelayedPayment)
+            {
+                // This is Ordered by Customer
+                var service = new SessionService();
+                Session session = service.Get(orderHeaderModel.PaymentSessionID);
+
+                if(session.PaymentStatus.ToLower() == "paid")
+                {
+                    _unitOfWork.OrderHeader.UpdateStripePaymentID(orderHeaderID, session.Id,session.PaymentIntentId);
+                    _unitOfWork.OrderHeader.UpdateStatus(orderHeaderID, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
+                }
+            }
+
+            List<ShoppingCartModel> shoppingCarts = _unitOfWork.ShoppingCart.GetAll(u => u.BulkyBookUserID == orderHeaderModel.BulkyBookUserID).ToList();
+
+            _unitOfWork.ShoppingCart.RemoveRange(shoppingCarts);
+            _unitOfWork.Save();
+
             return View(orderHeaderID);
         }
-
+		#endregion
 
 		#region Add Cart
 		public IActionResult AddCart(int cartID)
