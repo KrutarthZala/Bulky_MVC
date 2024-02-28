@@ -31,6 +31,7 @@ namespace BulkyBook.Models
         public DateTime PaymentDate { get; set; }
         public DateOnly PaymentDueDate { get; set; }
 
+        public string? PaymentSessionID {  get; set; }
         public string? PaymentIntentID { get; set; }
 
 
