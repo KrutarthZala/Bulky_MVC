@@ -10,8 +10,10 @@
         <br />
         Payment has been applied successfully! <br />
         <a asp-area="Admin" 
-           asp-controller="order"
-           asp-action="Details" 
-           asp-route-orderHeaderID="@Model" style="btn btn-primary">Back to Order Details</a>
+           asp-controller="Order"
+           asp-action="OrderDetails" 
+           asp-route-orderID="@Model" class="btn btn-primary">
+           Back to Order Details
+       </a>
     </div>
 </div>

@@ -131,6 +131,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         }
         #endregion
 
+        #region Company Payment
         [HttpPost]
         [ActionName("OrderDetails")]
         public IActionResult Details_Pay_Now()
@@ -143,7 +144,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             var options = new Stripe.Checkout.SessionCreateOptions
             {
                 SuccessUrl = domain + $"Admin/Order/PaymentConformation?orderHeaderID={OrderVM.OrderHeader.OrderHeaderID}",
-                CancelUrl = domain + $"Admin/Order/Details?orderID={OrderVM.OrderHeader.OrderHeaderID}",
+                CancelUrl = domain + $"Admin/Order/OrderDetails?orderID={OrderVM.OrderHeader.OrderHeaderID}",
                 LineItems = new List<Stripe.Checkout.SessionLineItemOptions>(),
                 BillingAddressCollection = "required", // Collect the billing address
                 ShippingAddressCollection = new SessionShippingAddressCollectionOptions(),
@@ -175,6 +176,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
             Response.Headers.Add("Location", session.Url);
             return new StatusCodeResult(303);
         }
+        #endregion
 
         #region Payment Conformation
         public IActionResult PaymentConformation(int orderHeaderID)
