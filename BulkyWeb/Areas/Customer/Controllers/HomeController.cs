@@ -1,6 +1,9 @@
 using BulkyBook.DataAccess.Repository.IRepository;
 using BulkyBook.Models;
+using BulkyBook.Models.ViewModels;
+using BulkyBook.Utility;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -26,6 +29,7 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             return View(productList);
         }
 
+        #region Details GET 
         // Display Details Page 
         public IActionResult Details(int productID)
         {
@@ -34,10 +38,12 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
                 Product = _unitOfWork.Product.Get(u => u.ProductID == productID, includeProperties: "Category"),
                 ProductCount = 1,
                 ProductID = productID
-            }; 
+            };
             return View(cart);
         }
+        #endregion
 
+        #region Details POST
         [HttpPost]
         [Authorize]
         public IActionResult Details(ShoppingCartModel shoppingCart)
@@ -50,19 +56,22 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             if (cartFromDb != null)
             {
                 // Shopping cart exists
-                cartFromDb.ProductCount += shoppingCart.ProductCount;    
+                cartFromDb.ProductCount += shoppingCart.ProductCount;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
+                _unitOfWork.Save();
             }
             else
             {
                 // Add Cart to Database
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
+                _unitOfWork.Save();
+                HttpContext.Session.SetInt32(SD.SessionCart, _unitOfWork.ShoppingCart.GetAll(u => u.BulkyBookUserID == bulkyBookUserID).Count());
 
             }
-            _unitOfWork.Save();
             TempData["success"] = "Cart Updated Successfully";
             return RedirectToAction(nameof(Index));
         }
+        #endregion
 
         public IActionResult Privacy()
         {
