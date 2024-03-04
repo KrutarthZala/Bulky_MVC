@@ -28,6 +28,13 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
 });
 
+// Add Google Authentication Service
+builder.Services.AddAuthentication().AddGoogle(options =>
+{
+    options.ClientId = "621617289028-h035tsbvuee9e2qp2qkacpalehrb7ohu.apps.googleusercontent.com";
+    options.ClientSecret = "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";
+});
+
 // Add Session Service
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
