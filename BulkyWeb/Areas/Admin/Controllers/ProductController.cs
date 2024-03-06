@@ -131,7 +131,7 @@ namespace BulkyBookWeb.Areas.Admin.Controllers
         }
         #endregion
 
-        #region Delete Product
+        #region Delete Product.
         [HttpDelete]
         public IActionResult DeleteProduct(int productID)
         {
