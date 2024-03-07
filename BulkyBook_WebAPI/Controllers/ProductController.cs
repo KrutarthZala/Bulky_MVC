@@ -1,6 +1,4 @@
-﻿using BulkyBook_WebAPI.Implementation;
-using BulkyBook_WebAPI.Models;
-using BulkyBook_WebAPI.Services;
+﻿using BulkyBook_WebAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BulkyBook_WebAPI.Controllers

@@ -6,12 +6,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
-using System.Diagnostics;
 using System.Security.Claims;
 
 namespace BulkyBookWeb.Areas.Admin.Controllers
 {
-	[Area("Admin")]
+    [Area("Admin")]
 	[Authorize]
 	public class OrderController : Controller
 	{

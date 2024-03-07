@@ -19,6 +19,12 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-primary border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                @if (User.IsInRole(SD.Role_Admin))
+                {
+                    <button class="btn navbar-brand bg-primary text-bg-dark me-1" style="font-size:20px;" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+                        <i class="bi bi-justify"></i>
+                    </button>
+                }
                 <a class="navbar-brand" asp-area="Customer" asp-controller="Home" asp-action="Index">BulkyBookWeb</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -54,6 +60,20 @@
                                     </li>
                                 </ul>
                             </li>
+
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Reports
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Report" asp-action="OrderReport">Order Reports</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Report" asp-action="TransactionReport">Transaction Reports</a>
+                                    </li>
+                                </ul>
+                            </li>
                         }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
@@ -69,6 +89,27 @@
     <div class="container">
         <main role="main" class="pb-3">
             <partial name="_Notification" />
+            @if (User.IsInRole(SD.Role_Admin))
+            {
+                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Details</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                <div class="offcanvas-body">
+                    <div class="dropdown mt-3">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Reports
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
+                            <li><a class="dropdown-item" href="#">Order Report</a></li>
+                            <li><a class="dropdown-item" href="#">Transaction Report</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </div>
+                </div>
+                </div>
+            }
             @RenderBody()
         </main>
     </div>

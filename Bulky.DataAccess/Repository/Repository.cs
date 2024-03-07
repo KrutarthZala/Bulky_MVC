@@ -1,7 +1,6 @@
 ﻿using BulkyBook.DataAccess.Data;
 using BulkyBook.DataAccess.Repository.IRepository;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using System.Linq.Expressions;
 
 namespace BulkyBook.DataAccess.Repository

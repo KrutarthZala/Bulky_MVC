@@ -1,0 +1,58 @@
+﻿<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="text-white py-2">Order Report</h2>
+            </div>
+        </div>
+    </div>
+    <div class="card-body p-3">
+            <form class="form-control mb-3">
+                <div class="row">
+                        <div class="col-5">
+                            <label>Start Date:</label>
+                            <input type="date" id="startOrderDate" class="form-control" required />
+                        </div>
+                        <div class="col-5">
+                            <label>End Date:</label>
+                            <input type="date" id="endOrderDate" class="form-control" required />
+                        </div>
+                        <div class="col-2 mt-3">
+                            <a asp-action="OrderReport"
+                               id="displayOrder"
+                               class="btn btn-primary bg-gradient border-0 form-control pt-1">
+                                Search
+                            </a>
+                        </div>
+                </div>
+            </form>
+        <table id="dataTableOrderReport" class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Phone Number
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Status
+                    </th>
+                    <th>
+                        Total
+                    </th>
+                    <th>
+                        Order Date
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/orderReport.js"></script>
+}
