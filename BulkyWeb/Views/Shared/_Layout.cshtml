@@ -38,43 +38,6 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Order</a>
                         </li>
-                        @if (User.IsInRole(SD.Role_Admin))
-                        {
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Content Management
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Company" asp-action="Index">Company</a>
-                                    </li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create a User</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Reports
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Report" asp-action="OrderReport">Order Reports</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="dropdown-item" asp-area="Admin" asp-controller="Report" asp-action="TransactionReport">Transaction Reports</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        }
                         <li class="nav-item">
                             <a class="nav-link" asp-area="Customer" asp-controller="Cart" asp-action="Index">
                                 @await Component.InvokeAsync("ShoppingCart")
@@ -91,23 +54,70 @@
             <partial name="_Notification" />
             @if (User.IsInRole(SD.Role_Admin))
             {
-                <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
-                    <div class="offcanvas-header">
-                    <h5 class="offcanvas-title" id="offcanvasExampleLabel">Details</h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                <div class="offcanvas offcanvas-start" style="width:fit-content" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+                    <div class="offcanvas-header  navbar-dark bg-primary text-white">
+                        <h5 class="offcanvas-title me-2" id="offcanvasExampleLabel">BulkyBook Admin</h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
-                <div class="offcanvas-body">
-                    <div class="dropdown mt-3">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Reports
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="">
-                            <li><a class="dropdown-item" href="#">Order Report</a></li>
-                            <li><a class="dropdown-item" href="#">Transaction Report</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <div class="offcanvas-body">
+                        <ul class="list-unstyled ps-0">
+                            <li class="mb-1">
+                                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#content-collapse" aria-expanded="true">
+                                    Content Management
+                                </button>
+                                <div class="collapse" id="content-collapse">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 ms-4">
+                                        <li>
+                                           <a class=" link-dark link-offset-2 link-underline link-underline-opacity-0"
+                                               asp-area="Admin" asp-controller="Category" asp-action="Index">
+                                               Category
+                                           </a>
+                                        </li>
+                                        <li>
+                                            <a class=" link-dark link-offset-2 link-underline link-underline-opacity-0"
+                                               asp-area="Admin" asp-controller="Product" asp-action="Index">
+                                            Product
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class=" link-dark link-offset-2 link-underline link-underline-opacity-0"
+                                               asp-area="Admin" asp-controller="Company" asp-action="Index">
+                                            Company
+                                            </a>
+                                        </li>
+                                        <li><hr class="p-0 m-0 w-50" /></li>
+                                        <li>
+                                            <a class=" link-dark link-offset-2 link-underline link-underline-opacity-0"
+                                               asp-area="Identity" asp-page="/Account/Register">
+                                            Create a User
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="mb-1">
+                                <button class="btn btn-toggle align-items-center rounded collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
+                                    Reports
+                                </button>
+                                <div class="collapse" id="dashboard-collapse">
+                                    <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 ms-4">
+                                        <li>
+                                            <a class="link-dark link-offset-2 link-underline link-underline-opacity-0"
+                                               asp-area="Admin" asp-controller="Report" asp-action="OrderReport">
+                                                Order Report
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a class=" link-dark link-offset-2 link-underline link-underline-opacity-0"
+                                               asp-area="Admin" asp-controller="Report" asp-action="TransactionReport">
+                                                Transaction Report
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
                         </ul>
                     </div>
-                </div>
                 </div>
             }
             @RenderBody()
